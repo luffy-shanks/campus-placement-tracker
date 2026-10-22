@@ -1,60 +1,131 @@
 # Campus Placement Tracker
 
-A responsive React application for students and placement administrators. It includes a React frontend and an Express/MongoDB API. The frontend keeps local mock mode enabled unless `VITE_MOCK_MODE=false` is set.
+A placement-management app for students and college placement administrators. The React frontend talks to an Express API, and user accounts, drives, applications, and student profiles are stored in MongoDB.
 
 ## Requirements
 
-- Node.js 20.19 or newer
+- Node.js 20.19 or newer (Node.js 22 LTS or 24 is recommended)
 - npm
-- MongoDB Community Server locally, or a MongoDB Atlas connection string
+- MongoDB Community Server or a MongoDB Atlas cluster
 
-## Setup
+## Run locally
 
-```powershell
-npm install
-Copy-Item .env.example .env
-# Edit .env: set MONGODB_URI and replace JWT_SECRET and the bootstrap password.
-npm run dev:full
-```
+1. Clone the repository and open its folder in a terminal.
 
-The frontend runs at `http://localhost:5173` and proxies `/api` to the backend on port `3001`.
+   ```bash
+   git clone https://github.com/luffy-shanks/campus-placement-tracker.git
+   cd campus-placement-tracker
+   ```
 
-## Mock mode accounts
+2. Install packages and create your local environment file.
 
-| Role | Email | Password |
+   **Windows PowerShell:**
+
+   ```powershell
+   npm install
+   Copy-Item .env.example .env
+   ```
+
+   **macOS / Linux:**
+
+   ```bash
+   npm install
+   cp .env.example .env
+   ```
+
+3. Edit `.env` and set:
+
+   - `MONGODB_URI` to your local MongoDB URI or Atlas connection string. For Atlas, replace the username, password, and database name; URL-encode special characters in the database password.
+   - `JWT_SECRET` to a private random string of at least 32 characters. Generate one with:
+
+     ```bash
+     node --input-type=module -e "import { randomBytes } from 'node:crypto'; console.log(randomBytes(48).toString('hex'))"
+     ```
+
+   - `BOOTSTRAP_ADMIN_NAME`, `BOOTSTRAP_ADMIN_EMAIL`, and `BOOTSTRAP_ADMIN_PASSWORD` for the first administrator. Use a strong password. The backend creates this account only when the database has no administrator yet.
+   - Leave `VITE_MOCK_MODE=false` to use the API and MongoDB. `VITE_API_BASE_URL=/api/v1` is correct for local development.
+
+4. Make sure MongoDB is running. For Atlas, allow the development machine's IP address in Atlas Network Access and create a database user with read/write access to the application database.
+
+5. Start the frontend and API together:
+
+   ```bash
+   npm run dev:full
+   ```
+
+6. Open [http://localhost:5173](http://localhost:5173). The API health endpoint is [http://localhost:3001/api/v1/health](http://localhost:3001/api/v1/health).
+
+The Vite development server proxies `/api` requests to the API on port `3001`. Stop both processes with `Ctrl+C`.
+
+## Accounts and data
+
+- The first administrator is created from the `BOOTSTRAP_ADMIN_*` settings when the database has no admin account. If an admin already exists, add another administrator from **Admin → Settings → Add administrator**.
+- Students create accounts through the registration page. Admins can create placement drives and manage applications through the admin area.
+- In API mode, the application reads and writes records in the configured MongoDB database. It does not automatically insert demo records at startup. The optional mock mode is only for local UI demonstrations; keep `VITE_MOCK_MODE=false` to use real database records.
+- Drive application URLs are optional. When a drive has a URL, students can open the employer's form and then confirm completion in the tracker. Drives without a URL use the tracker application flow.
+- Student resumes are stored by the API and are limited to 10 MB per file (PDF, DOC, or DOCX).
+- Never commit `.env` or share its MongoDB URI, JWT secret, or administrator password. `.env` is ignored by Git.
+
+## Environment variables
+
+### Frontend
+
+| Variable | Purpose | Local value |
 | --- | --- | --- |
-| Student | `student@example.com` | `password123` |
-| Admin | `admin@example.com` | `admin123` |
+| `VITE_API_BASE_URL` | API base URL used by the frontend | `/api/v1` |
+| `VITE_MOCK_MODE` | Use local demonstration data when `true`; use the API when `false` | `false` |
 
-These credentials work only when `VITE_MOCK_MODE` is enabled. In API mode, the first admin is created using the `BOOTSTRAP_ADMIN_*` values in `.env`; students create accounts through Student Registration.
+### API
 
-## Environment
+| Variable | Purpose | Local value |
+| --- | --- | --- |
+| `PORT` | API listening port | `3001` |
+| `CLIENT_ORIGIN` | Allowed frontend origin(s), comma-separated | `http://localhost:5173` |
+| `MONGODB_URI` | MongoDB connection string | Set this yourself |
+| `JWT_SECRET` | Secret used to sign login tokens; minimum 32 characters | Set this yourself |
+| `JWT_EXPIRES_IN` | Login token lifetime | `8h` |
+| `BOOTSTRAP_ADMIN_NAME` | Name for the first admin account | `Placement Administrator` |
+| `BOOTSTRAP_ADMIN_EMAIL` | Email for the first admin account | Set this yourself |
+| `BOOTSTRAP_ADMIN_PASSWORD` | Password for the first admin account | Set this yourself |
 
-`MONGODB_URI` points to your MongoDB database. `JWT_SECRET` must be a private random value of at least 32 characters. `BOOTSTRAP_ADMIN_EMAIL` and `BOOTSTRAP_ADMIN_PASSWORD` create the first administrator only when the database has no admin yet. Change the example credentials before running the server. `VITE_API_BASE_URL` defaults to `/api/v1`; set `VITE_MOCK_MODE=false` to send service calls to the API. Restart Vite after changing environment variables.
+Restart Vite and the API after changing environment variables.
 
-Mock changes are held in browser memory and reset on a full page reload. Backend accounts and records persist in MongoDB. The backend hashes passwords with bcrypt and uses expiring JWT bearer tokens. Admin account creation is restricted by the backend to an authenticated admin.
+## Deploy with Render
 
-## Commands
+Create an API **Web Service** and a frontend **Static Site** from the GitHub repository.
 
-- `npm run dev` starts Vite.
-- `npm run dev:api` starts the API with Node's watch mode.
-- `npm run dev:full` starts Vite and the API together.
-- `npm run start:api` starts the API without watch mode.
-- `npm run seed:sample-drives` adds the six sample placement drives from the admin drive examples to the MongoDB database configured in `.env`. It skips a company/role pair that already exists.
-- `npm run publish:sample-drives` publishes those six sample drives through the live API. Set `CPT_ADMIN_EMAIL` and `CPT_ADMIN_PASSWORD` in the shell first; the command checks for existing company/role pairs and skips them.
-- `npm run build` creates the production bundle in `dist/`.
-- `npm run preview` previews the production bundle.
-- `npm run lint` runs ESLint across the project.
-- `npm test` runs the utility unit tests with Node's built-in test runner.
+### API Web Service
 
-The lint configuration uses ESLint's core recommended rules. The built-in parser's unused-variable rule is disabled because it does not count JSX component tags as variable references.
+- Build command: `npm install`
+- Start command: `npm run start:api`
+- Set `MONGODB_URI`, `JWT_SECRET`, `CLIENT_ORIGIN`, and the `BOOTSTRAP_ADMIN_*` variables in the service's Environment settings. Set `CLIENT_ORIGIN` to the deployed frontend URL.
+- In MongoDB Atlas Network Access, allow connections from the API host. Use a least-privilege database user.
 
-## Application areas
+### Frontend Static Site
 
-- Public landing, login, and student registration pages.
-- Student dashboard, drives, applications, and profile.
-- Admin dashboard, drive management, students, applications, companies, analytics, and settings.
-- Service modules in `src/services/` isolate API and mock data access.
-- The API is in `server/`; its current routes cover login/registration, admin provisioning, students, drives, applications, companies, and analytics.
-- Student resumes can be uploaded, retrieved, or deleted through the authenticated profile API; the database keeps resume files up to 10 MB.
-- Shared UI primitives in `src/components/common/` and date, status, and eligibility helpers in `src/utils/`.
+- Build command: `npm install && npm run build`
+- Publish directory: `dist`
+- Set `VITE_MOCK_MODE=false`.
+- Set `VITE_API_BASE_URL` to the API URL followed by `/api/v1`, for example `https://your-api.onrender.com/api/v1`.
+- Redeploy after changing frontend environment variables. Vite embeds these values when building the frontend.
+
+## Useful commands
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the frontend only |
+| `npm run dev:api` | Start the API with file watching |
+| `npm run dev:full` | Start frontend and API together |
+| `npm run start:api` | Start the API for deployment |
+| `npm run build` | Build the production frontend in `dist/` |
+| `npm run preview` | Preview the production frontend locally |
+| `npm run lint` | Run ESLint |
+| `npm test` | Run utility tests |
+
+## Main features
+
+- Student registration, login, dashboard, placement drives, applications, and profile/resume management.
+- Admin dashboard, drive management, student directory, application status management, company summaries, analytics, and admin account creation.
+- Eligibility checks for branch, graduation year, CGPA, and active backlogs.
+- Application status history, charts, search, filters, and responsive layouts.
+- Express API with authenticated routes, role checks, MongoDB persistence, password hashing, and JWT sessions.
