@@ -40,6 +40,8 @@ Mock changes are held in browser memory and reset on a full page reload. Backend
 - `npm run dev:api` starts the API with Node's watch mode.
 - `npm run dev:full` starts Vite and the API together.
 - `npm run start:api` starts the API without watch mode.
+- `npm run seed:sample-drives` adds the six sample placement drives from the admin drive examples to the MongoDB database configured in `.env`. It skips a company/role pair that already exists.
+- `npm run publish:sample-drives` publishes those six sample drives through the live API. Set `CPT_ADMIN_EMAIL` and `CPT_ADMIN_PASSWORD` in the shell first; the command checks for existing company/role pairs and skips them.
 - `npm run build` creates the production bundle in `dist/`.
 - `npm run preview` previews the production bundle.
 - `npm run lint` runs ESLint across the project.

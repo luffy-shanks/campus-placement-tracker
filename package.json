@@ -8,6 +8,8 @@
     "dev:api": "node --watch server/index.js",
     "dev:full": "concurrently -k -n api,web -c blue,green \"npm:dev:api\" \"npm:dev\"",
     "start:api": "node server/index.js",
+    "seed:sample-drives": "node scripts/seed-sample-drives.js",
+    "publish:sample-drives": "node scripts/publish-sample-drives.js",
     "lint": "eslint .",
     "build": "vite build",
     "preview": "vite preview",

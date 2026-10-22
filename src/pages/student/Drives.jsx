@@ -1,7 +1,7 @@
 // src/pages/student/Drives.jsx
 import React, { useState, useMemo } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Search, Filter, X, Calendar, MapPin, IndianRupee, GraduationCap } from 'lucide-react';
+import { Search, Filter, X, Calendar, MapPin, IndianRupee, GraduationCap, ExternalLink } from 'lucide-react';
 import { mockDrives, mockApplications, currentStudentProfile } from '../../data/mockData';
 import { getEligibilityLabel, getEligibilityClasses } from '../../utils/eligibility';
 import { formatDate, daysRemaining } from '../../utils/helpers';
@@ -148,6 +148,15 @@ const Drives = () => {
                 </div>
                 <div className="text-xs text-charcoal/50 mb-3">
                   Branches: {d.eligibleBranches.join(', ')} · Backlogs ≤ {d.maxBacklogs}
+                </div>
+                <div className="mb-3 text-sm">
+                  {d.externalApplicationUrl ? (
+                    <a href={d.externalApplicationUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 font-medium text-cobaltBlue hover:underline">
+                      Open external application <ExternalLink size={14} />
+                    </a>
+                  ) : (
+                    <span className="text-charcoal/50">Apply through the college placement portal</span>
+                  )}
                 </div>
                 <div className="flex gap-2">
                   <Link to={`/student/drives/${d.id}`} className="flex-1 text-center text-sm px-3 py-2 border border-cobaltBlue text-cobaltBlue rounded-md hover:bg-cobaltBlue/5 transition font-medium">

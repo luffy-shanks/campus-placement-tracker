@@ -24,6 +24,24 @@ export const mockCompanies = [
 
 export const mockDrives = [
   {
+    id: 'seed-salesforce-swe-intern-2027', companyName: 'Salesforce', role: 'Summer 2027 Software Engineer Intern', description: 'External opportunity for the 2028 graduating class in Bengaluru or Hyderabad. Review the employer listing for current eligibility, location and application deadline. The deadline and drive date here are internal tracking placeholders; the placement administrator should confirm and update them.', location: 'Bengaluru / Hyderabad', externalApplicationUrl: 'https://careers.salesforce.com/jp/%E3%82%B8%E3%83%A7%E3%83%96/jr337715/summer-2027-intern-software-engineer/', packageLPA: null, eligibleBranches: ['CSE', 'IT'], minCGPA: 0, maxBacklogs: 0, eligibleGradYears: [2028], applicationDeadline: '2026-11-30', driveDate: '2026-12-07', status: 'open',
+  },
+  {
+    id: 'seed-bear-systems-intern', companyName: 'Bear Systems', role: 'Software Engineering Intern', description: 'External student/early-career internship listing. The listing describes an on-site role; confirm the current office location, closing date and eligibility on the employer page. Dates in this tracker are internal placeholders and should be verified by the placement team.', location: 'India (confirm on employer page)', externalApplicationUrl: 'https://bearsystems.in/careers/software-engineering-intern', packageLPA: null, eligibleBranches: ['CSE', 'IT'], minCGPA: 0, maxBacklogs: 0, eligibleGradYears: [2028], applicationDeadline: '2026-11-30', driveDate: '2026-12-07', status: 'open',
+  },
+  {
+    id: 'seed-wells-fargo-technology-intern', companyName: 'Wells Fargo', role: '2027 Technology Internship', description: 'Technology internship program information for India. The employer page notes 2028 graduation eligibility for internship programs and campus-based hiring; check with the college placement cell for an active application route. Dates in this tracker are internal placeholders.', location: 'India (campus hiring; confirm location)', externalApplicationUrl: 'https://www.wellsfargojobs.com/en/early-careers/international-programs/india-programs/india/technology/', packageLPA: null, eligibleBranches: ['CSE', 'IT', 'ECE', 'EEE'], minCGPA: 0, maxBacklogs: 0, eligibleGradYears: [2028], applicationDeadline: '2026-11-30', driveDate: '2026-12-07', status: 'open',
+  },
+  {
+    id: 'seed-edwards-it-intern', companyName: 'Edwards', role: 'IT Internship Program — Jan–Jun 2027', description: 'External technology internship listing in Pune covering software engineering and related technology projects. Check the employer page for currently open applications and graduation-year eligibility. Dates in this tracker are internal placeholders.', location: 'Pune, India', externalApplicationUrl: 'https://edwards.wd5.myworkdayjobs.com/en-US/EdwardsCareers/job/India-Pune/IT-Internship-Program--January---June-2027-_Req-50762', packageLPA: null, eligibleBranches: ['CSE', 'IT'], minCGPA: 0, maxBacklogs: 0, eligibleGradYears: [2028], applicationDeadline: '2026-11-30', driveDate: '2026-12-07', status: 'open',
+  },
+  {
+    id: 'seed-campus-software-intern', companyName: 'College Placement Cell', role: 'Software Developer Intern — Campus Drive', description: 'College-managed sample drive without an external application link. The placement cell will share application instructions with eligible students. Replace this sample with a confirmed employer drive before publishing it to students.', location: 'On campus', externalApplicationUrl: '', packageLPA: null, eligibleBranches: ['CSE', 'IT'], minCGPA: 0, maxBacklogs: 0, eligibleGradYears: [2028], applicationDeadline: '2026-11-30', driveDate: '2026-12-07', status: 'open',
+  },
+  {
+    id: 'seed-campus-data-intern', companyName: 'College Placement Cell', role: 'Data Analytics Intern — Campus Drive', description: 'College-managed sample drive without an external application link. The placement cell will share application instructions with eligible students. Replace this sample with a confirmed employer drive before publishing it to students.', location: 'On campus', externalApplicationUrl: '', packageLPA: null, eligibleBranches: ['CSE', 'IT', 'ECE'], minCGPA: 0, maxBacklogs: 0, eligibleGradYears: [2028], applicationDeadline: '2026-11-30', driveDate: '2026-12-07', status: 'open',
+  },
+  {
     id: 'd1', companyId: 'c1', companyName: 'Google', role: 'Software Engineer', description: 'Full-time SDE role working on cloud infrastructure and large-scale distributed systems.', location: 'Bangalore', packageLPA: 25, eligibleBranches: ['CSE', 'IT'], minCGPA: 8.0, maxBacklogs: 0, eligibleGradYears: [2025], applicationDeadline: '2025-03-15', driveDate: '2025-03-25', status: 'open',
   },
   {
