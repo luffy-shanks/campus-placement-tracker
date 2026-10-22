@@ -17,7 +17,7 @@ const Drives = () => {
   const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const student = { ...currentStudentProfile, ...user };
-  const { data: drives } = useApiData(driveService.list, mockDrives);
+  const { data: drives, loading: drivesLoading } = useApiData(driveService.list, mockDrives);
   const { data: applications } = useApiData(applicationService.list, mockApplications);
   const myApps = applications.filter(a => a.studentId === student.id);
 
@@ -122,7 +122,9 @@ const Drives = () => {
       </div>
 
       {/* Drive cards */}
-      {filtered.length > 0 ? (
+      {drivesLoading ? (
+        <div className="bg-pureWhite rounded-xl border border-moonlitSilver p-10 text-center text-sm text-charcoal/55" role="status">Loading drives…</div>
+      ) : filtered.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filtered.map(d => {
             const eligLabel = getEligibilityLabel(student, d);

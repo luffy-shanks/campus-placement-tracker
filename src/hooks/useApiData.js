@@ -1,11 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MOCK_MODE } from '../services/api';
 
 export function useApiData(loader, initialValue) {
-  const [data, setData] = useState(initialValue);
+  // In API mode, do not briefly paint local mock records before the real request resolves.
+  const startingValue = MOCK_MODE || !Array.isArray(initialValue) ? initialValue : [];
+  const [data, setData] = useState(startingValue);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [revision, setRevision] = useState(0);
-  const fallback = useRef(initialValue);
+  const fallback = useRef(startingValue);
 
   const reload = useCallback(() => setRevision(value => value + 1), []);
 
