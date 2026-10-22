@@ -21,6 +21,8 @@ api.interceptors.request.use(config => {
 
 export const request = (config, mockHandler) => MOCK_MODE
   ? Promise.resolve().then(mockHandler)
-  : api.request(config).then(response => response.data);
+  : api.request(config).then(response => response.data).catch(error => {
+    throw new Error(error.response?.data?.message || error.message || 'The request failed.');
+  });
 
 export default api;

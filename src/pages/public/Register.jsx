@@ -77,7 +77,7 @@ const Register = () => {
             <div className="relative">
               <label className="block text-charcoal text-sm font-medium mb-1" htmlFor="password">Password</label>
               <input id="password" type={showPassword ? 'text' : 'password'} className={inputClasses(errors.password)}
-                {...register('password', { required: 'Password is required', minLength: { value: 6, message: 'At least 6 characters' } })} />
+                {...register('password', { required: 'Password is required', minLength: { value: 8, message: 'At least 8 characters' } })} />
               <button type="button" onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-[34px] text-charcoal/50 hover:text-charcoal">
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
